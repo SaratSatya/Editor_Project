@@ -35,7 +35,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                                 tokenType: account.token_type,
                                 scope: account.scope,
                                 idToken: account.id_token,
-                                sessionState: account.session_state,
+                                sessionState: account.session_state ? String(account.session_state) : undefined,
                             },
                         },
                     },
@@ -65,7 +65,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                             tokenType: account.token_type,
                             scope: account.scope,
                             idToken: account.id_token,
-                            sessionState: account.session_state,
+                            sessionState: account.session_state !== undefined ? String(account.session_state) : undefined,
                         },
                     })
                 }

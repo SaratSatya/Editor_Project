@@ -2,7 +2,7 @@ import GitHub from "next-auth/providers/github"
 import Google from "next-auth/providers/google"
 import type {NextAuthConfig} from "next-auth"
 
-export default{
+ export default{
     providers:[
         GitHub({
             clientId:process.env.AUTH_GITHUB_ID,
