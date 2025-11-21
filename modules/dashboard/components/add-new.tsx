@@ -7,15 +7,16 @@ import { Plus } from 'lucide-react'
 import Image from "next/image"
 import { useRouter } from "next/navigation";
 import { useState } from "react"
+import TemplateSelectionModel from "./template-selecting-model";
 import { toast } from "sonner";
 
 const AddNewButton = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModelOpen, setIsModelOpen] = useState(false);
 
   return (
     <>
       <div
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => setIsModelOpen(true)}
         className="group px-6 py-6 flex flex-row justify-between items-center border rounded-lg bg-muted cursor-pointer 
         transition-all duration-300 ease-in-out
         hover:bg-background hover:border-[#E93F3F] hover:scale-[1.02]
@@ -46,6 +47,7 @@ const AddNewButton = () => {
           />
         </div>
       </div>
+      <TemplateSelectionModel isOpen={isModelOpen} onClose={()=>setIsModelOpen(false)} onSubmit={()=>{}}/>
       
     {/* //   Todo Implement Template Selecting Model here */}
     </>
