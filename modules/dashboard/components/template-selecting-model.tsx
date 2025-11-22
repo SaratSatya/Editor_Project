@@ -298,7 +298,7 @@ const TemplateSelectionModal = ({
 
                         <div className="flex gap-4">
                           <div
-                            className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full"
+                            className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full"
                             style={{
                               backgroundColor: `${template.color}26`, // ~15% opacity
                             }}

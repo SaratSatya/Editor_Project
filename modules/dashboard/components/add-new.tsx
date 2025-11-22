@@ -9,9 +9,29 @@ import { useRouter } from "next/navigation";
 import { useState } from "react"
 import TemplateSelectionModel from "./template-selecting-model";
 import { toast } from "sonner";
+import { createPlayground } from "../actions";
 
 const AddNewButton = () => {
   const [isModelOpen, setIsModelOpen] = useState(false);
+  const [selectedTemplate,setSelectedTemplate]=useState<{
+    title:string;
+    template:"REACT" | "NEXTJS" | "EXPRESS" | "VUE" | "HONO" | "ANGULAR";
+    description?:string;
+  } | null>(null)
+  const router=useRouter();
+
+
+  const handleSubmit=async(data:{
+    title:string;
+    template:"REACT" | "NEXTJS" | "EXPRESS" | "VUE" | "HONO" | "ANGULAR";
+    description?:string;
+  })=>{
+    setSelectedTemplate(data)
+    const res=await createPlayground(data);
+    toast.success("Playground Created successfully")
+    setIsModelOpen(false)
+    router.push(`/playground/${res?.id}`)
+  }
 
   return (
     <>
@@ -47,7 +67,7 @@ const AddNewButton = () => {
           />
         </div>
       </div>
-      <TemplateSelectionModel isOpen={isModelOpen} onClose={()=>setIsModelOpen(false)} onSubmit={()=>{}}/>
+      <TemplateSelectionModel isOpen={isModelOpen} onClose={()=>setIsModelOpen(false)} onSubmit={handleSubmit}/>
       
     {/* //   Todo Implement Template Selecting Model here */}
     </>

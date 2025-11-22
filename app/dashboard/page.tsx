@@ -1,4 +1,6 @@
-import { getAllPlaygroundForUser } from '@/modules/dashboard/actions'
+
+
+import { deleteProjectById, duplicateProjectById, editProjectById, getAllPlaygroundForUser } from '@/modules/dashboard/actions'
 import AddNewButton from '@/modules/dashboard/components/add-new'
 import AddRepo from '@/modules/dashboard/components/add-repo'
 import EmptyState from '@/modules/dashboard/components/empty-state'
@@ -16,7 +18,7 @@ const page = async() => {
       <div className='mt-10 flex flex-col justify-center items-center w-full'>
         {
           playgrounds && playgrounds.length===0? (<EmptyState/>):(
-            <ProjectTable projects={playgrounds || []} onDeleteProject={()=>{}} onUpdateProject={()=>{}} onDuplicateProject={()=>{}}/>
+            <ProjectTable projects={playgrounds || []} onDeleteProject={deleteProjectById} onUpdateProject={editProjectById} onDuplicateProject={duplicateProjectById}/>
           )
         }
       </div>
