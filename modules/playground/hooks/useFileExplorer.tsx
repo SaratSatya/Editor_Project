@@ -15,7 +15,7 @@ interface OpenFile extends TemplateFile{
 interface FileExplorerState{
     playgroundId:string;
     templateData:TemplateFolder | null;
-    openfiles:OpenFile[];
+    openFiles:OpenFile[];
     activeFileId:string | null;
     editorContent:string,
 
@@ -47,13 +47,13 @@ export const useFileExplorer=create<FileExplorerState>((set,get)=>({
         set({playgroundId:id});
     },
     setEditorContent:(content)=>set({editorContent:content}),
-    setOpenFiles:(files)=>set({openfiles:files}),
+    setOpenFiles:(files)=>set({openFiles:files}),
     setActiveFileId:(fileId)=>set({activeFileId:fileId}),
 
     openFile:(file)=>{
         const fileId=generateFileId(file,get().templateData!);
-        const {openfiles}=get();
-        const existingFile=openfiles.find((f)=>f.id===fileId);
+        const {openFiles}=get();
+        const existingFile=openFiles.find((f)=>f.id===fileId);
         if(existingFile){
             set({activeFileId:fileId,editorContent:existingFile.content});
             return;
@@ -67,15 +67,15 @@ export const useFileExplorer=create<FileExplorerState>((set,get)=>({
         };
 
         set((state)=>({
-            openFiles:[...state.openfiles,newOpenFile],
+            openFiles:[...state.openFiles,newOpenFile],
             activeFileId:fileId,
             editorContent:file.content || "",
         }))
     },
 
     closeFile:(fileId)=>{
-        const {openfiles,activeFileId}=get();
-        const newFiles=openfiles.filter((f)=>f.id!==fileId);
+        const {openFiles,activeFileId}=get();
+        const newFiles=openFiles.filter((f)=>f.id!==fileId);
 
         //If we're closing the active file, switch to another file or clear active 
         let newActiveFileId=activeFileId;
@@ -92,7 +92,7 @@ export const useFileExplorer=create<FileExplorerState>((set,get)=>({
             }
         }
         set({
-            openfiles:newFiles,
+            openFiles:newFiles,
             activeFileId:newActiveFileId,
             editorContent:newEditorContent
         })
@@ -100,7 +100,7 @@ export const useFileExplorer=create<FileExplorerState>((set,get)=>({
 
     closeAllFiles:()=>{
         set({
-            openfiles:[],
+            openFiles:[],
             activeFileId:null,
             editorContent:"",
         })
