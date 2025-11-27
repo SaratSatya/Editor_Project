@@ -22,10 +22,11 @@ import LoadingStep from '@/modules/playground/components/loader';
 import { fi } from 'date-fns/locale';
 import { toast } from 'sonner';
 import { findFilePath } from '@/modules/playground/lib';
+import ToggleAI from '@/modules/playground/components/toggle-ai';
 
 const MainPlaygroundPage = () => {
     const {id} =useParams<{id:string}>();
-    const [isPreviewVisible, setIsPreviewVisible] = useState(false);
+    const [isPreviewVisible, setIsPreviewVisible] = useState(true);
 
 
     const {playgroundData,templateData,isLoading,error,saveTemplateData}=usePlayground(id);
@@ -324,9 +325,7 @@ const MainPlaygroundPage = () => {
               </TooltipTrigger>
               <TooltipContent>Save All (Ctrl+Shift+S)</TooltipContent>
             </Tooltip>
-            <Button variant={"default"} size={"icon"}> 
-              <Bot className="size-4"/>
-            </Button>
+            <ToggleAI isEnabled={true} onToggle={()=>{}} suggestionLoading={false}/>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -377,7 +376,7 @@ const MainPlaygroundPage = () => {
                         <Button size='sm' variant='ghost' onClick={closeAllFiles} className='h-6 px-2 text-sx'>
                           Close All
                         </Button>
-                      )}
+                      )}ollama run codellama:7b
                     </div>
                   </Tabs>
                 </div>
