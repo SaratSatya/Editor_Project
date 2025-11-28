@@ -23,6 +23,7 @@ import { fi } from 'date-fns/locale';
 import { toast } from 'sonner';
 import { findFilePath } from '@/modules/playground/lib';
 import ToggleAI from '@/modules/playground/components/toggle-ai';
+import { useAISuggestions } from '@/modules/playground/hooks/useAISuggestion';
 
 const MainPlaygroundPage = () => {
     const {id} =useParams<{id:string}>();
@@ -30,6 +31,8 @@ const MainPlaygroundPage = () => {
 
 
     const {playgroundData,templateData,isLoading,error,saveTemplateData}=usePlayground(id);
+
+    const aiSuggestions=useAISuggestions();
     const {setTemplateData,setActiveFileId,setPlaygroundId,setOpenFiles,activeFileId,closeAllFiles,closeFile,openFile,openFiles,handleAddFile,handleAddFolder,handleDeleteFile,handleDeleteFolder,handleRenameFile,handleRenameFolder,updateFileContent}=useFileExplorer();
     const {serverUrl,
       isLoading:containerLoading,
@@ -163,7 +166,7 @@ const MainPlaygroundPage = () => {
         }
 
         const newTemplateData=await saveTemplateData(updatedTemplateData);
-        setTemplateData(newTemplateData || updatedTemplateData);
+        setTemplateData(newTemplateData! || updatedTemplateData);
 
         //Update open files 
         const updatedOpenFiles=openFiles.map((f)=>
@@ -325,7 +328,7 @@ const MainPlaygroundPage = () => {
               </TooltipTrigger>
               <TooltipContent>Save All (Ctrl+Shift+S)</TooltipContent>
             </Tooltip>
-            <ToggleAI isEnabled={true} onToggle={()=>{}} suggestionLoading={false}/>
+            <ToggleAI isEnabled={aiSuggestions.isEnabled} onToggle={aiSuggestions.toggleEnabled} suggestionLoading={aiSuggestions.isLoading}/>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -376,14 +379,24 @@ const MainPlaygroundPage = () => {
                         <Button size='sm' variant='ghost' onClick={closeAllFiles} className='h-6 px-2 text-sx'>
                           Close All
                         </Button>
-                      )}ollama run codellama:7b
+                      )}llama3.2:1b 
                     </div>
                   </Tabs>
                 </div>
                 <div className="flex-1">
                   <ResizablePanelGroup direction="horizontal" className="h-full">
                     <ResizablePanel defaultSize={isPreviewVisible?50:100}>
-                      <PlaygroundEditor activeFile={activeFile} content={activeFile?.content || ""} onContentChange={(value)=>{activeFileId && updateFileContent(activeFileId,value)}}/>
+                      <PlaygroundEditor 
+                      activeFile={activeFile} 
+                      content={activeFile?.content || ""} 
+                      onContentChange={(value)=>{activeFileId && updateFileContent(activeFileId,value)}}
+                       suggestion={aiSuggestions.suggestion} 
+                       suggestionLoading={aiSuggestions.isLoading} 
+                       suggestionPosition={aiSuggestions.position} 
+                       onAcceptSuggestion={(editor,monaco)=>aiSuggestions.acceptSuggestion(editor,monaco)} 
+                       onRejectSuggestion={(editor)=>aiSuggestions.rejectSuggestion(editor)} 
+                       onTriggerSuggestion={(type,editor)=>aiSuggestions.fetchSuggestion(type,editor)}
+                       />
                     </ResizablePanel>
                     {
                       isPreviewVisible && (
